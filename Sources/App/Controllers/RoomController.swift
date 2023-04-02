@@ -24,7 +24,6 @@ struct RoomController: RouteCollection {
     }
 
     func create(req: Request) async throws -> Room {
-        // Check if user in system.
         let room = try req.content.decode(Room.self)
         try await room.save(on: req.db)
         return room
