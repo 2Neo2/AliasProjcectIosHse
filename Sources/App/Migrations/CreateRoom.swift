@@ -9,20 +9,12 @@ import Fluent
 
 struct CreateRoom: AsyncMigration {
     
-    func randInvintationCode(isPrivate: Bool) -> String? {
-        if !isPrivate {
-            let letters = "0123456789"
-            return String((0..<10).map{ _ in letters.randomElement()! })
-        }
-        return nil
-    }
-    
     func prepare(on database: Database) async throws {
         try await database.schema("rooms")
             .id()
-            .field("name", .string, .required)
-            .field("adminId", .uuid, .required)
-            .field("permissin", .bool, .required)
+            .field("name", .string, .required).unique(on: "name")
+            .field("adminId", .uuid, .required, .references("users", "id"))
+            .field("permission", .bool, .required)
             .field("scorePerWord", .int8, .required)
             .field("invintationCode", .string)
             .field("isGameStarted", .bool)
