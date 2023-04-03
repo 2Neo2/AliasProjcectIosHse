@@ -12,6 +12,6 @@ func routes(_ app: Application) throws {
 
     try app.register(collection: UserController())
     try app.register(collection: RoomController())
-    try app.register(collection: TeamConnectionsController())
     try app.register(collection: TeamController())
+    try app.register(collection: TeamConnectionsController())
 }
