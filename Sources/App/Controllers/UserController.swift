@@ -17,7 +17,6 @@ struct UserController: RouteCollection {
     }
 
     func create(req: Request) async throws -> User {
-        // Check if user in system.
         let user = try req.content.decode(User.self)
         try await user.save(on: req.db)
         return user

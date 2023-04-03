@@ -24,7 +24,6 @@ struct TeamConnectionsController: RouteCollection {
     }
 
     func create(req: Request) async throws -> TeamConnection {
-        // Check if connection is used.
         let connection = try req.content.decode(TeamConnection.self)
         try await connection.save(on: req.db)
         return connection

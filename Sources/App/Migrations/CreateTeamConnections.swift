@@ -12,7 +12,7 @@ struct CreateTeamConnections: AsyncMigration {
         try await database.schema("connections")
             .id()
             .field("userID", .uuid, .required, .references("users", "id"))
-            .field("teamID", .uuid, .required)
+            .field("teamID", .uuid, .required, .references("teams", "id"))
             .create()
     }
     
