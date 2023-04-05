@@ -15,8 +15,20 @@ struct TeamConnectionsController: RouteCollection {
         connections.post(use: create)
         
         connections.group(":connectionID") { connect in
+            connect.get(use: getConnection)
+        }
+        
+        connections.group(":connectionID") { connect in
             connect.delete(use: delete)
         }
+    }
+    
+    func getConnection(req: Request) async throws -> TeamConnection {
+        guard let connect = try await
+                TeamConnection.find(req.parameters.get("connectionID"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        return connect
     }
     
     func index(req: Request) async throws -> [TeamConnection] {

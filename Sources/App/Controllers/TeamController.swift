@@ -15,8 +15,19 @@ struct TeamController: RouteCollection {
         teams.post(use: create)
         
         teams.group(":teamID") { team in
+            team.get(use: getTeam)
+        }
+        
+        teams.group(":teamID") { team in
             team.delete(use: delete)
         }
+    }
+    
+    func getTeam(req: Request) async throws -> Team {
+        guard let team = try await Team.find(req.parameters.get("teamID"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        return team
     }
 
     func index(req: Request) async throws -> [Team] {

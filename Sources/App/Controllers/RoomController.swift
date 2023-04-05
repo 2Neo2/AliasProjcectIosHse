@@ -15,8 +15,19 @@ struct RoomController: RouteCollection {
         rooms.post(use: create)
         
         rooms.group(":roomID") { room in
+            room.get(use: getRoom)
+        }
+        
+        rooms.group(":roomID") { room in
             room.delete(use: delete)
         }
+    }
+    
+    func getRoom(req: Request) async throws -> Room {
+        guard let room = try await Room.find(req.parameters.get("roomID"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        return room
     }
 
     func index(req: Request) async throws -> [Room] {
