@@ -21,6 +21,10 @@ struct RoomController: RouteCollection {
         rooms.group(":roomID") { room in
             room.delete(use: delete)
         }
+        
+        rooms.group(":roomID") { room in
+            room.put(use: updateRoomSettings)
+        }
     }
     
     // СRUD: Получение одной комнаты по id
@@ -50,5 +54,18 @@ struct RoomController: RouteCollection {
         }
         try await room.delete(on: req.db)
         return .noContent
+    }
+    
+    // СRUD: Обновление данных комнаты
+    func updateRoomSettings(req: Request) async throws -> Room {
+        let updateRoom = try req.content.decode(Room.self)
+        guard let room = try await Room.find(req.parameters.get("roomID"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        room.scoreToWin = updateRoom.scoreToWin
+        room.scorePerWord = updateRoom.scorePerWord
+        room.roundTime = updateRoom.roundTime
+        try await room.save(on: req.db)
+        return room
     }
 }
