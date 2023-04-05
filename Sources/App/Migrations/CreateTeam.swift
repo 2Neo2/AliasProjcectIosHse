@@ -13,7 +13,7 @@ struct CreateTeam: AsyncMigration {
         try await database.schema("teams")
             .id()
             .field("name", .string, .required).unique(on: "name")
-            .field("roomID", .uuid, .required, .references("rooms", "id"))
+            .field("roomID", .uuid, .required, .references("rooms", "id", onDelete: .cascade))
             .field("score", .double, .required)
             .create()
     }

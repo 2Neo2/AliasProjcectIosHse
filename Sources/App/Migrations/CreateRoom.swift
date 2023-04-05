@@ -13,7 +13,7 @@ struct CreateRoom: AsyncMigration {
         try await database.schema("rooms")
             .id()
             .field("name", .string, .required).unique(on: "name")
-            .field("adminId", .uuid, .required, .references("users", "id"))
+            .field("adminId", .uuid, .required, .references("users", "id", onDelete: .cascade))
             .field("permission", .bool, .required)
             .field("scorePerWord", .double, .required)
             .field("invintationCode", .string)
