@@ -24,7 +24,7 @@ final class Room: Model, Content {
     var permission: Bool
     
     @Field(key: "scorePerWord")
-    var scorePerWord: Int
+    var scorePerWord: Double
     
     @Field(key: "invintationCode")
     var invintationCode: String?
@@ -33,14 +33,14 @@ final class Room: Model, Content {
     var isGameStarted: Bool
     
     @Field(key: "scoreToWin")
-    var scoreToWin: Int
+    var scoreToWin: Double
     
     @Field(key: "roundTime")
     var roundTime: Double
     
     init() { }
     
-    init(id: UUID? = nil, name: String, adminId: UUID, permission: Bool, scorePerWord: Int, invintationCode: String? = nil, isGameStarted: Bool = false, scoreToWin: Int, roundTime: Double) {
+    init(id: UUID? = nil, name: String, adminId: UUID, permission: Bool, scorePerWord: Double, invintationCode: String? = nil, isGameStarted: Bool = false, scoreToWin: Double, roundTime: Double) {
         self.id = id
         self.name = name
         self.adminId = adminId

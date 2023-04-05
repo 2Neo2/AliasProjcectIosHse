@@ -15,10 +15,10 @@ struct CreateRoom: AsyncMigration {
             .field("name", .string, .required).unique(on: "name")
             .field("adminId", .uuid, .required, .references("users", "id"))
             .field("permission", .bool, .required)
-            .field("scorePerWord", .int8, .required)
+            .field("scorePerWord", .double, .required)
             .field("invintationCode", .string)
             .field("isGameStarted", .bool)
-            .field("scoreToWin", .int8, .required)
+            .field("scoreToWin", .double, .required)
             .field("roundTime", .double, .required)
             .create()
     }
