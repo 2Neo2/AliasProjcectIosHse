@@ -22,11 +22,11 @@ final class Team: Model, Content {
     var roomID: UUID?
     
     @Field(key: "score")
-    var score: Int
+    var score: Double
     
     init() {}
     
-    init(id: UUID? = nil, name: String, roomID: UUID? = nil, score: Int) {
+    init(id: UUID? = nil, name: String, roomID: UUID? = nil, score: Double) {
         self.id = id
         self.name = name
         self.roomID = roomID

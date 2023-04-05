@@ -65,6 +65,7 @@ struct RoomController: RouteCollection {
         room.scoreToWin = updateRoom.scoreToWin
         room.scorePerWord = updateRoom.scorePerWord
         room.roundTime = updateRoom.roundTime
+        room.isGameStarted = updateRoom.isGameStarted
         try await room.save(on: req.db)
         return room
     }

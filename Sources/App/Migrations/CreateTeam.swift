@@ -14,7 +14,7 @@ struct CreateTeam: AsyncMigration {
             .id()
             .field("name", .string, .required).unique(on: "name")
             .field("roomID", .uuid, .required, .references("rooms", "id"))
-            .field("score", .int, .required)
+            .field("score", .double, .required)
             .create()
     }
     
