@@ -23,6 +23,7 @@ struct TeamConnectionsController: RouteCollection {
         }
     }
     
+    // СRUD: Получение одного коннекшна по id
     func getConnection(req: Request) async throws -> TeamConnection {
         guard let connect = try await
                 TeamConnection.find(req.parameters.get("connectionID"), on: req.db) else {
@@ -31,16 +32,19 @@ struct TeamConnectionsController: RouteCollection {
         return connect
     }
     
+    // СRUD: Получение всех коннекшнов
     func index(req: Request) async throws -> [TeamConnection] {
         try await TeamConnection.query(on: req.db).all()
     }
 
+    // СRUD: Создание коннекшна
     func create(req: Request) async throws -> TeamConnection {
         let connection = try req.content.decode(TeamConnection.self)
         try await connection.save(on: req.db)
         return connection
     }
 
+    // СRUD: Удаление одного коннекшна по id
     func delete(req: Request) async throws -> HTTPStatus {
         guard let connect = try await
                 TeamConnection.find(req.parameters.get("connectionID"), on: req.db) else {

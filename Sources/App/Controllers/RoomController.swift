@@ -23,23 +23,27 @@ struct RoomController: RouteCollection {
         }
     }
     
+    // СRUD: Получение одной комнаты по id
     func getRoom(req: Request) async throws -> Room {
         guard let room = try await Room.find(req.parameters.get("roomID"), on: req.db) else {
             throw Abort(.notFound)
         }
         return room
     }
-
+    
+    // СRUD: Получение всех комнат
     func index(req: Request) async throws -> [Room] {
         try await Room.query(on: req.db).all()
     }
 
+    // СRUD: Создание комнаты
     func create(req: Request) async throws -> Room {
         let room = try req.content.decode(Room.self)
         try await room.save(on: req.db)
         return room
     }
 
+    // СRUD: Удаление комнаты по id
     func delete(req: Request) async throws -> HTTPStatus {
         guard let room = try await Room.find(req.parameters.get("roomID"), on: req.db) else {
             throw Abort(.notFound)

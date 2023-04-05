@@ -23,6 +23,7 @@ struct TeamController: RouteCollection {
         }
     }
     
+    // СRUD: Получение одной команды по id
     func getTeam(req: Request) async throws -> Team {
         guard let team = try await Team.find(req.parameters.get("teamID"), on: req.db) else {
             throw Abort(.notFound)
@@ -30,16 +31,19 @@ struct TeamController: RouteCollection {
         return team
     }
 
+    // СRUD: Получение всех команд
     func index(req: Request) async throws -> [Team] {
         try await Team.query(on: req.db).all()
     }
 
+    // СRUD: Создание команды
     func create(req: Request) async throws -> Team {
         let team = try req.content.decode(Team.self)
         try await team.save(on: req.db)
         return team
     }
 
+    // СRUD: Удаление одной команды по id
     func delete(req: Request) async throws -> HTTPStatus {
         guard let team = try await Team.find(req.parameters.get("teamID"), on: req.db) else {
             throw Abort(.notFound)
