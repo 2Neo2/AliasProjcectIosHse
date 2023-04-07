@@ -12,17 +12,21 @@ struct RoomController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
         let rooms = routes.grouped("rooms")
         rooms.get(use: index)
-        rooms.post(use: create)
-        
         rooms.group(":roomID") { room in
             room.get(use: getRoom)
         }
         
-        rooms.group(":roomID") { room in
+        let basicMW = User.authenticator()
+        let guardMW = User.guardMiddleware()
+        let protected = rooms.grouped(basicMW, guardMW)
+        
+        protected.post(use: create)
+        
+        protected.group(":roomID") { room in
             room.delete(use: delete)
         }
         
-        rooms.group(":roomID") { room in
+        protected.group(":roomID") { room in
             room.put(use: updateRoomSettings)
         }
     }

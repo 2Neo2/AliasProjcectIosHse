@@ -12,13 +12,17 @@ struct TeamController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
         let teams = routes.grouped("teams")
         teams.get(use: index)
-        teams.post(use: create)
-        
         teams.group(":teamID") { team in
             team.get(use: getTeam)
         }
         
-        teams.group(":teamID") { team in
+        let basicMW = User.authenticator()
+        let guardMW = User.guardMiddleware()
+        let protected = teams.grouped(basicMW, guardMW)
+        
+        protected.post(use: create)
+        
+        protected.group(":teamID") { team in
             team.delete(use: delete)
         }
     }

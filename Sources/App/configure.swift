@@ -16,7 +16,6 @@ public func configure(_ app: Application) throws {
     ), as: .psql)
 
     app.migrations.add(CreateUser())
-//    app.migrations.add(CreateToken())
     app.migrations.add(CreateRoom())
     app.migrations.add(CreateTeam())
     app.migrations.add(CreateTeamConnections())

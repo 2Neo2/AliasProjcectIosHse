@@ -16,10 +16,6 @@ final class User: Model, Content, Authenticatable {
     @Field(key: "password_hash")
     var passwordHash: String
     
-//    func generateToken() throws -> Token {
-//        try .init(value: [UInt8].random(count: 16).base64, userID: self.requireID())
-//    }
-    
     init() { }
     
     init(id: UUID? = nil, email: String, login: String, passwordHash: String) {
@@ -48,39 +44,10 @@ extension User.Create: Validatable {
 }
 
 extension User: ModelAuthenticatable {
-    static let usernameKey = \User.$email
+    static let usernameKey = \User.$login
     static let passwordHashKey = \User.$passwordHash
 
     func verify(password: String) throws -> Bool {
         try Bcrypt.verify(password, created: self.passwordHash)
     }
 }
-
-
-//final class Token: Model, Content {
-//    static let schema = "tokens"
-//
-//    @ID(key: .id)
-//    var id: UUID?
-//
-//    @Field(key: "value")
-//    var value: String
-//
-//    @Parent(key: "user_id")
-//    var user: User
-//
-//    init() { }
-//
-//    init(id: UUID? = nil, value: String, userID: User.IDValue) {
-//        self.id = id
-//        self.value = value
-//        self.$user.id = userID
-//    }
-//}
-//
-//extension Token: ModelTokenAuthenticatable {
-//    static let valueKey = \Token.$value
-//    static let userKey = \Token.$user
-//    
-//    var isValid: Bool { true }
-//}
